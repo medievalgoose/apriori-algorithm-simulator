@@ -1,0 +1,178 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Analisis Apriori</h1>
+<br />
+<br />
+
+<p>Minimum Support = Total Itemset * MinimumSupport -> @ViewBag.ProductList.Count * @ViewBag.MinimumSupportPercentage = @ViewBag.MinimumSupportResult</p>
+<p>Minimum Confidence = @ViewBag.MinimumConfidence</p>
+
+<br />
+<br />
+
+<h2>One Item</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product ID:</th>
+            <th>Product Name:</th>
+            <th>Support Count:</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @for (int i = 0; i < ViewBag.QualifiedProductList.Count; i++)
+        {
+            <tr>
+                <td>@ViewBag.QualifiedProductList[i].Id</td>
+                <td>@ViewBag.QualifiedProductList[i].ProductName</td>
+                <td>@ViewBag.OneItemOccurence[ViewBag.QualifiedProductList[i].Id]</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+<br />
+
+<h2>Two Items Combinations</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>IDs</th>
+            <th>Names</th>
+            <th>Support Count</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @for (int i = 0; i < ViewBag.QualifiedTwoItemCombinations.Count; i++)
+        {
+            <tr>
+                <td>@ViewBag.QualifiedTwoItemCombinations[i][0] , @ViewBag.QualifiedTwoitemCombinations[i][1]</td>
+                <td>@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][0]].ProductName, @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][1]].ProductName</td>
+                <td>@ViewBag.TwoItemOccurence[ViewBag.QualifiedTwoItemCombinations[i]]</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+<br />
+
+<h2>Three Items Combinations</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>IDs</th>
+            <th>Names</th>
+            <th>Support Count</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @for (int i = 0; i < ViewBag.QualifiedThreeItemCombinations.Count; i++)
+        {
+            <tr>
+                <td>@ViewBag.QualifiedThreeItemCombinations[i][0], @ViewBag.QualifiedThreeItemCombinations[i][1], @ViewBag.QualifiedThreeItemCombinations[i][2]</td>
+                <td>@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][0]].ProductName, @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][1]].ProductName, @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][2]].ProductName</td>
+                <td>@ViewBag.ThreeItemOccurence[ViewBag.QualifiedThreeItemCombinations[i]]</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+<br />
+
+<h2>Two items combination confidence</h2>
+<p>Scale from 0 - 1</p>
+@for (int i = 0; i < ViewBag.QualifiedTwoItemCombinations.Count; i++)
+{
+    <div>
+        <hr />
+        @{
+            var resultFloat = ViewBag.TwoItemCombinationConfidence[ViewBag.QualifiedTwoItemCombinations[i]];
+        }
+
+        @if( (resultFloat[0] * 100) >= ViewBag.MinimumConfidence)
+        {
+            // <p style="color: green;">@ViewBag.QualifiedTwoItemCombinations[i][0] -> @ViewBag.QualifiedTwoItemCombinations[i][1], confidence: @resultFloat[0]</p>
+            <p style="color: green;">@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][0]].ProductName -> @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][1]].ProductName, confidence: @resultFloat[0]</p>
+        }
+        else
+        {
+            // <p>@ViewBag.QualifiedTwoItemCombinations[i][0] -> @ViewBag.QualifiedTwoItemCombinations[i][1], confidence: @resultFloat[0]</p>
+            <p>@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][0]].ProductName -> @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][1]].ProductName, confidence: @resultFloat[0]</p>
+        }
+
+        @if ( (resultFloat[1] * 100) >= ViewBag.MinimumConfidence)
+        {
+            // <p style="color: green;">@ViewBag.QualifiedTwoItemCombinations[i][1] -> @ViewBag.QualifiedTwoItemCombinations[i][0], confidence: @resultFloat[1]</p>
+            <p style="color: green;">@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][1]].ProductName -> @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][0]].ProductName, confidence: @resultFloat[1]</p>
+        }
+        else
+        {
+            // <p>@ViewBag.QualifiedTwoItemCombinations[i][1] -> @ViewBag.QualifiedTwoItemCombinations[i][0], confidence: @resultFloat[1]</p>
+            <p>@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][1]].ProductName -> @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][0]].ProductName, confidence: @resultFloat[1]</p>
+
+        }
+        
+        <hr />
+    </div>
+}
+
+<br />
+<br />
+
+<h2>Three items combination confidence</h2>
+<p>Scale from 0 - 1</p>
+@for (int i = 0; i < ViewBag.QualifiedThreeItemCombinations.Count; i++)
+{
+    <div>
+        <hr />
+        @{
+            var resultFloat = ViewBag.ThreeItemCombinationConfidence[ViewBag.QualifiedThreeItemCombinations[i]];
+        }
+
+        @if( (resultFloat[0] * 100) >= ViewBag.MinimumConfidence)
+        {
+            // <p style="color: green;">@ViewBag.QualifiedThreeItemCombinations[i][0], @ViewBag.QualifiedThreeItemCombinations[i][1] -> @ViewBag.QualifiedThreeItemCombinations[i][2], confidence: @resultFloat[0]</p>
+            <p style="color: green;">@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][0]].ProductName, @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][1]].ProductName -> @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][2]].ProductName, confidence: @resultFloat[0]</p>
+        }
+        else
+        {
+            // <p>@ViewBag.QualifiedThreeItemCombinations[i][0], @ViewBag.QualifiedThreeItemCombinations[i][1] -> @ViewBag.QualifiedThreeItemCombinations[i][2], confidence: @resultFloat[0]</p>
+            <p>@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][0]].ProductName, @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][1]].ProductName -> @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][2]].ProductName, confidence: @resultFloat[0]</p>
+        }
+        
+        @if( (resultFloat[1] * 100) >= ViewBag.MinimumConfidence)
+        {
+            <p style="color: green;">@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][0]].ProductName, @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][2]].ProductName -> @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][1]].ProductName, confidence: @resultFloat[1]</p>
+        }
+        else
+        {
+            // <p>@ViewBag.QualifiedThreeItemCombinations[i][0], @ViewBag.QualifiedThreeItemCombinations[i][2] -> @ViewBag.QualifiedThreeItemCombinations[i][1], confidence: @resultFloat[1]</p>
+            <p>@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][0]].ProductName, @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][2]].ProductName -> @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][1]].ProductName, confidence: @resultFloat[1]</p>
+        }
+        
+        @if( (resultFloat[2] * 100) >= ViewBag.MinimumConfidence)
+        {
+            // <p style="color: green;">@ViewBag.QualifiedThreeItemCombinations[i][1], @ViewBag.QualifiedThreeItemCombinations[i][2] -> @ViewBag.QualifiedThreeItemCombinations[i][0], confidence: @resultFloat[2]</p>
+            <p style="color: green;">@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][1]].ProductName, @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][2]].ProductName -> @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][0]].ProductName, confidence: @resultFloat[2]</p>
+        }
+        else
+        {
+            // <p>@ViewBag.QualifiedThreeItemCombinations[i][1], @ViewBag.QualifiedThreeItemCombinations[i][2] -> @ViewBag.QualifiedThreeItemCombinations[i][0], confidence: @resultFloat[2]</p>
+            <p>@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][1]].ProductName, @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][2]].ProductName -> @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][0]].ProductName, confidence: @resultFloat[2]</p>
+        }
+
+        <hr />
+    </div>
+}

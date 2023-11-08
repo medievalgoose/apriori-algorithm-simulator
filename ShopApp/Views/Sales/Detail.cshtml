@@ -1,0 +1,54 @@
+﻿@model IEnumerable<SalesDetail>;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+<h1>Sales Detail - @ViewBag.SalesDetailID</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductId</td>
+                <td>@item.Products?.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>
+                    <form asp-action="EditSalesDetail" asp-controller="Sales" asp-route-id="@item.SalesId">
+                        <input type="hidden" value="@item.ProductId" name="ProductId" />
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </form>
+                    <br />
+                    <form asp-action="DeleteSalesDetail" asp-controller="Sales" asp-route-id="@item.SalesId">
+                        <input type="hidden" value="@item.ProductId" name="ProductId" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form asp-action="CreateSalesDetail" asp-controller="Sales">
+    <input type="hidden" value="@ViewBag.SalesDetailID" name="SalesId" />
+
+    <select asp-items="@ViewBag.Products" name="ProductId"></select>
+
+    <input type="number" name="Quantity" min="1" value="@ViewBag.SelectedProductQuantity"/>
+
+    <button type="submit">Submit</button>
+</form>

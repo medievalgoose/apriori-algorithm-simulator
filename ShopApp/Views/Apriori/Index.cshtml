@@ -1,0 +1,29 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Apriori Algorithm Analysis</h1>
+
+<form method="post" asp-action="Result" asp-controller="Apriori">
+
+    <br />
+
+    <div>
+        <label for="minSupport">Minimum Support (%) </label>
+        <input type="number" min="0" max="50" name="minSupport" value="40"/>
+    </div>
+
+    <br />
+
+    <div>
+        <label for="minConfidence">Minimum Confidence (%) </label>
+        <input type="number" min="0" max="90" name="minConfidence" value="70"/>
+    </div>
+
+    <br />
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

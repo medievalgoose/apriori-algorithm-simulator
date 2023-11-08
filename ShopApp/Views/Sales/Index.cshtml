@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Sales>;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Sales / Orders List</h1>
+
+<br />
+
+<form asp-action="Create" asp-controller="Sales">
+    @{
+        // <input type="date" name="SalesDate" value="@ViewBag.CurrentDate" />
+    }
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>SalesId</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.SalesDate</td>
+                <td><a asp-action="Detail" asp-route-id="@item.Id" asp-controller="Sales" class="btn btn-primary">Detail</a> <a asp-action="Delete" asp-route-id="@item.Id" asp-controller="Sales" class="btn btn-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

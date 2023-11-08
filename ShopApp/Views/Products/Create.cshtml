@@ -1,0 +1,24 @@
+﻿@model Product;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Create page</h1>
+
+
+<form method="post" asp-action="Create" asp-controller="Products">
+    <label asp-for="ProductName">Product Name</label>
+    <input asp-for="ProductName" type="text" />
+
+    <label asp-for="Price">Price</label>
+    <input asp-for="Price" type="text" />
+
+    <label asp-for="CategoryId">Category</label>
+    <select asp-for="CategoryId" asp-items="ViewBag.Category">
+    </select>
+
+    <button type="submit">Submit</button>
+</form>
