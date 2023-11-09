@@ -35,9 +35,9 @@ namespace ShopApp.Controllers
              * 5. Dtermine the probability of the first and second item to influence the third item.
              */
 
-            // Formula = min_support * total_itemset
+            // Formula = min_support * number of transactions
             // float minimumSupport = (_context.Products.Count() * 40) / 100;
-            float minimumSupport = (_context.Products.Count() * minSupport) / 100;
+            float minimumSupport = (_context.Sales.Count() * minSupport) / 100;
             float minimumConfidence = minConfidence;
 
 
@@ -316,6 +316,7 @@ namespace ShopApp.Controllers
             ViewBag.MinimumConfidence = minimumConfidence;
 
             ViewBag.ProductList = _context.Products.ToList();
+            ViewBag.NumberOfSales = _context.Sales.Count();
             ViewBag.QualifiedProductDictionary = qualifiedProductDictionary;
 
             ViewBag.QualifiedProductList = qualifiedProductList;
