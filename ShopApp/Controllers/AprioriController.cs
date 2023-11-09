@@ -35,9 +35,6 @@ namespace ShopApp.Controllers
              * 5. Dtermine the probability of the first and second item to influence the third item.
              */
 
-            // Assumed support threshold = 40%;
-            // Assumed confidence threshold = 70%;
-
             // Formula = min_support * total_itemset
             // float minimumSupport = (_context.Products.Count() * 40) / 100;
             float minimumSupport = (_context.Products.Count() * minSupport) / 100;
@@ -312,19 +309,6 @@ namespace ShopApp.Controllers
 
                 Console.WriteLine("*******************************");
             }
-
-
-
-            // Testing ViewBag capabilities.
-            /*
-            var testDict = new Dictionary<string, string>();
-
-            testDict["kunaon?"] = "baik atuh mang";
-
-            ViewBag.Products = _context.Products.ToList();
-            ViewBag.Dictionary = testDict;
-            */
-
 
             // Final step: Passing data to the view.
             ViewBag.MinimumSupportPercentage = minSupport;
