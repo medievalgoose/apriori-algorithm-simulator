@@ -176,3 +176,48 @@
         <hr />
     </div>
 }
+
+<br />
+<br />
+
+<h2>Association Rule Results</h2>
+<hr />
+@for (int i = 0; i < ViewBag.QualifiedTwoItemCombinations.Count; i++)
+{
+    var resultFloat = ViewBag.TwoItemCombinationConfidence[ViewBag.QualifiedTwoItemCombinations[i]];
+    var productOne = ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][0]].ProductName;
+    var productTwo = ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][1]].ProductName;
+
+    @if (resultFloat[0] * 100 >= ViewBag.MinimumConfidence)
+    {
+        <p>Ada @(MathF.Round(resultFloat[0] * 100))% kemungkinan ketika konsumen membeli @productOne juga akan membeli @productTwo</p>
+    }
+
+    @if (resultFloat[1] * 100 >= ViewBag.MinimumConfidence)
+    {
+        <p>Ada @(MathF.Round(resultFloat[1] * 100))% kemungkinan ketika konsumen membeli @productTwo juga akan membeli @productOne</p>
+    }
+}
+
+@for (int i = 0; i < ViewBag.QualifiedThreeItemCombinations.Count; i++)
+{
+    var resultFloat = ViewBag.ThreeItemCombinationConfidence[ViewBag.QualifiedThreeItemCombinations[i]];
+    var productOne = ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][0]].ProductName;
+    var productTwo = ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][1]].ProductName;
+    var productThree = ViewBag.QualifiedProductDictionary[ViewBag.QualifiedThreeItemCombinations[i][2]].ProductName;
+
+    @if (resultFloat[0] * 100 >= ViewBag.MinimumConfidence)
+    {
+        <p>Ada @(MathF.Round(resultFloat[0] * 100))% kemungkinan ketika konsumen membeli @productOne dan @productTwo, juga akan membeli @productThree</p>
+    }
+
+    @if (resultFloat[1] * 100 >= ViewBag.MinimumConfidence)
+    {
+        <p>Ada @(MathF.Round(resultFloat[1] * 100))% kemungkinan ketika konsumen membeli @productOne dan @productThree, juga akan membeli @productTwo</p>
+    }
+
+    @if (resultFloat[2] * 100 >= ViewBag.MinimumConfidence)
+    {
+        <p>Ada @(MathF.Round(resultFloat[2] * 100))% kemungkinan ketika konsumen membeli @productTwo dan @productThree, juga akan membeli @productOne</p>
+    }
+}
