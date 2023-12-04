@@ -5,6 +5,7 @@ using ShopApp.Data;
 using ShopApp.Models;
 using ShopApp.Utilities;
 using System.Collections;
+using System.Linq;
 
 namespace ShopApp.Controllers
 {
@@ -64,11 +65,14 @@ namespace ShopApp.Controllers
                 }
             }
 
+
             // One item occurence debugging:
+            /*
             for (int i = 0; i < qualifiedProductList.Count; i++)
             {
                 Console.WriteLine($"{qualifiedProductList[i].ProductName}, occurence:  {oneItemOccurence[qualifiedProductList[i].Id]}");
             }
+            */
 
 
             // TWO ITEMS COMBINATIONS
@@ -93,8 +97,10 @@ namespace ShopApp.Controllers
 
                 for (int i = a+1; i < qualifiedProductList.Count; i++)
                 {
+                    /*
                     Console.WriteLine(qualifiedProductList[a].Id);
                     Console.WriteLine(qualifiedProductList[i].Id);
+                    */
 
                     tempList.Add(qualifiedProductList[a].Id);
                     tempList.Add(qualifiedProductList[i].Id);
@@ -105,6 +111,7 @@ namespace ShopApp.Controllers
                 }
             }
 
+            /*
             for (int i = 0; i < itemCombinations.Count; i++)
             {
                 Console.WriteLine(i + "-----------------------------");
@@ -115,7 +122,10 @@ namespace ShopApp.Controllers
                 }
                 Console.WriteLine("-----------------------------");
             }
+            */
 
+            // DEFAULT METHOD FOR CALCULATING SUPPORT FOR TWO ITEM COMBINATIONS
+            
             for (int i = 0; i < itemCombinations.Count; i++)
             {
                 var salesList = _context.Sales.ToList();
@@ -124,10 +134,11 @@ namespace ShopApp.Controllers
                 for (int a = 0; a < salesList.Count; a++)
                 {
                     // Dalam satu sales yang sama, cek kombinasi item.
-                    var firstItem = _context.SalesDetails.Where(sd => sd.SalesId == salesList[a].Id && sd.ProductId == itemCombinations[i][0]).FirstOrDefault();
-                    var secondItem = _context.SalesDetails.Where(sd => sd.SalesId == salesList[a].Id && sd.ProductId == itemCombinations[i][1]).FirstOrDefault();
 
-                    if (firstItem != null && secondItem != null)
+                    var firstItem = _context.SalesDetails.Any(sd => sd.SalesId == salesList[a].Id && sd.ProductId == itemCombinations[i][0]);
+                    var secondItem = _context.SalesDetails.Any(sd => sd.SalesId == salesList[a].Id && sd.ProductId == itemCombinations[i][1]);
+
+                    if (firstItem && secondItem)
                     {
                         count += 1;
                     }
@@ -141,8 +152,57 @@ namespace ShopApp.Controllers
                     twoItemOccurence[itemCombinations[i]] = count;
                 }
             }
+            
+
+            // ALTERNATIVE METHOD TO CALCULATE TWO ITEM COMBINATIONS SUPPORT.
+            /*
+            var salesDetailsList = _context.SalesDetails.ToList();
+
+            for (int i = 0; i < itemCombinations.Count; i++)
+            {
+                Console.WriteLine("Another method experiment.");
+                int currentCombinationCount = 0;
+                int currentSales = 0;
+
+                for (int a = 0; a < salesDetailsList.Count; a++)
+                {
+                    bool firstItemConfirmed = false;
+                    bool secondItemConfirmed = false;
+
+                    if (salesDetailsList[a].SalesId == currentSales)
+                    {
+                        // Console.WriteLine("Same sales" + currentSales);
+
+                        if (salesDetailsList[a].ProductId == itemCombinations[i][1])
+                        {
+                            secondItemConfirmed = true;
+                            // Console.WriteLine("Second item confirmed: " + secondItemConfirmed);
+                            currentCombinationCount++;
+                        }
+                    }
+                    else
+                    {
+                        if (salesDetailsList[a].ProductId == itemCombinations[i][0])
+                        {
+                            firstItemConfirmed = true;
+                            currentSales = salesDetailsList[a].SalesId;
+                            // Console.WriteLine("First item confirmed: " + firstItemConfirmed);
+                            // Console.WriteLine("Current sales: " + currentSales);
+                        }
+                    }
+                }
+
+                if (currentCombinationCount >= minimumSupport)
+                {
+                    Console.WriteLine($"Result: {itemCombinations[i][0]} + {itemCombinations[i][1]} -> {currentCombinationCount}");
+                    qualifiedTwoItemCombinations.Add(itemCombinations[i]);
+                    twoItemOccurence[itemCombinations[i]] = currentCombinationCount;
+                }
+            }
+            */
 
             // Debugging purpose.
+            /*
             for (int i = 0; i < twoItemOccurence.Count; i++)
             {
                 Console.WriteLine("-------------------");
@@ -150,6 +210,7 @@ namespace ShopApp.Controllers
                 Console.WriteLine(twoItemOccurence[qualifiedTwoItemCombinations[i]]);
                 Console.WriteLine("-------------------");
             }
+            */
 
 
 
@@ -184,11 +245,11 @@ namespace ShopApp.Controllers
 
                 for (int b = 0; b < salesList.Count; b++)
                 {
-                    var firstItem = _context.SalesDetails.Where(sd => sd.SalesId == salesList[b].Id && sd.ProductId == threeItemsCombinations[a][0]).FirstOrDefault();
-                    var secondItem = _context.SalesDetails.Where(sd => sd.SalesId == salesList[b].Id && sd.ProductId == threeItemsCombinations[a][1]).FirstOrDefault();
-                    var thirdItem = _context.SalesDetails.Where(sd => sd.SalesId == salesList[b].Id && sd.ProductId == threeItemsCombinations[a][2]).FirstOrDefault();
+                    var firstItem = _context.SalesDetails.Any(sd => sd.SalesId == salesList[b].Id && sd.ProductId == threeItemsCombinations[a][0]);
+                    var secondItem = _context.SalesDetails.Any(sd => sd.SalesId == salesList[b].Id && sd.ProductId == threeItemsCombinations[a][1]);
+                    var thirdItem = _context.SalesDetails.Any(sd => sd.SalesId == salesList[b].Id && sd.ProductId == threeItemsCombinations[a][2]);
 
-                    if (firstItem != null && secondItem != null && thirdItem != null)
+                    if (firstItem && secondItem && thirdItem)
                     {
                         count += 1;
                     }
@@ -201,7 +262,50 @@ namespace ShopApp.Controllers
                 }
             }
 
+            // ALTERNATIVE METHOD
+            /*
+            var salesDetailsList = _context.SalesDetails.ToList();
 
+            for (int i = 0; i < threeItemsCombinations.Count; i++)
+            {
+                int confirmedItems = 0;
+                int currentSales = 0;
+                int currentCombinationCount = 0;
+
+                for (int a = 0; a < salesDetailsList.Count; a++)
+                {
+                    if (salesDetailsList[a].SalesId == currentSales)
+                    {
+                        if (threeItemsCombinations[i].Contains(salesDetailsList[a].ProductId))
+                        {
+                            confirmedItems++;
+
+                            if (confirmedItems == 3)
+                            {
+                                currentCombinationCount++;
+                                confirmedItems = 0;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (threeItemsCombinations[i].Contains(salesDetailsList[a].ProductId))
+                        {
+                            confirmedItems++;
+                            currentSales = salesDetailsList[a].SalesId;
+                        }
+                    }
+                }
+
+                if (currentCombinationCount >= minimumSupport)
+                {
+                    Console.WriteLine($"Result: {threeItemsCombinations[i][0]} + {threeItemsCombinations[i][1]} + {threeItemsCombinations[i][2]} -> {currentCombinationCount}");
+                }
+            }
+            */
+
+
+            /*
             for (int i = 0; i < qualifiedThreeItemsCombinations.Count; i++)
             {
                 Console.WriteLine("-------------------------");
@@ -209,6 +313,7 @@ namespace ShopApp.Controllers
                 Console.WriteLine($"{threeItemsCombinationOccurence[qualifiedThreeItemsCombinations[i]]}");
                 Console.WriteLine("-------------------------");
             }
+            */
 
 
             // CALCULATE THE CONFIDENCE
@@ -239,6 +344,7 @@ namespace ShopApp.Controllers
             }
 
             // two item confidence debugging:
+            /*
             for (int i = 0; i < qualifiedTwoItemCombinations.Count; i++)
             {
                 Console.WriteLine("//-------------------//");
@@ -252,6 +358,7 @@ namespace ShopApp.Controllers
                         $", confidence: {resultFloatList[a]}");
                 }
             }
+            */
 
 
             // Three items combinations confidence
@@ -295,6 +402,8 @@ namespace ShopApp.Controllers
             }
 
             // Three items combinations debugging:
+
+            /*
             for (int i = 0; i < qualifiedThreeItemsCombinations.Count; i++)
             {
                 Console.WriteLine("*******************************");
@@ -309,6 +418,9 @@ namespace ShopApp.Controllers
 
                 Console.WriteLine("*******************************");
             }
+            */
+
+            
 
             // Final step: Passing data to the view.
             ViewBag.MinimumSupportPercentage = minSupport;
