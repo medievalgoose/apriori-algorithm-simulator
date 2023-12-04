@@ -54,7 +54,7 @@
         @for (int i = 0; i < ViewBag.QualifiedTwoItemCombinations.Count; i++)
         {
             <tr>
-                <td>@ViewBag.QualifiedTwoItemCombinations[i][0] , @ViewBag.QualifiedTwoitemCombinations[i][1]</td>
+                <td>@ViewBag.QualifiedTwoItemCombinations[i][0], @ViewBag.QualifiedTwoitemCombinations[i][1]</td>
                 <td>@ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][0]].ProductName, @ViewBag.QualifiedProductDictionary[ViewBag.QualifiedTwoItemCombinations[i][1]].ProductName</td>
                 <td>@ViewBag.TwoItemOccurence[ViewBag.QualifiedTwoItemCombinations[i]]</td>
             </tr>

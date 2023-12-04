@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters.Xml;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShopApp.Data;
 using ShopApp.Models;
+using System.Security.Cryptography.Xml;
 
 namespace ShopApp.Controllers
 {
@@ -23,9 +25,29 @@ namespace ShopApp.Controllers
 
             var sales = _context.Sales
                 .Include(s => s.SalesDetails)
-                .ToListAsync();
+                .ToList();
 
-            return View(await sales);
+
+            var salesDictionary = new Dictionary<int, List<SalesDetail>>();
+            
+            foreach (var sale in sales)
+            {
+                var salesDetailList = sale.SalesDetails.ToList();
+                salesDictionary[sale.Id] = salesDetailList;
+            }
+
+            var products = _context.Products.ToList();
+            var productDictionary = new Dictionary<int, Product>();
+
+            foreach (var product in products)
+            {
+                productDictionary[product.Id] = product;
+            }
+
+            ViewBag.SalesDictionary = salesDictionary;
+            ViewBag.ProductDictionary = productDictionary;
+
+            return View(sales);
         }
 
         public IActionResult Detail(int id, int? productId)

@@ -6,7 +6,7 @@
 @{
 }
 
-<h1>Sales / Orders List</h1>
+<h1>Transactions List</h1>
 
 <br />
 
@@ -23,7 +23,7 @@
     <thead>
         <tr>
             <th>SalesId</th>
-            <th>Date</th>
+            <th>Items</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -33,7 +33,14 @@
         {
             <tr>
                 <td>@item.Id</td>
-                <td>@item.SalesDate</td>
+                <td>
+                    {
+                    @foreach (var salesDetail in ViewBag.SalesDictionary[item.Id])
+                    {
+                        <b>@ViewBag.ProductDictionary[salesDetail.ProductId].ProductName</b><b>, </b>
+                    }
+                    }
+                </td>
                 <td><a asp-action="Detail" asp-route-id="@item.Id" asp-controller="Sales" class="btn btn-primary">Detail</a> <a asp-action="Delete" asp-route-id="@item.Id" asp-controller="Sales" class="btn btn-danger">Delete</a></td>
             </tr>
         }
