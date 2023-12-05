@@ -1,0 +1,43 @@
+CREATE TABLE [dbo].[Categories] (
+    [Id]           INT            IDENTITY (1, 1) NOT NULL,
+    [CategoryName] NVARCHAR (MAX) NOT NULL,
+    CONSTRAINT [PK_Categories] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+CREATE TABLE [dbo].[Products] (
+    [Id]          INT            IDENTITY (1, 1) NOT NULL,
+    [ProductName] NVARCHAR (MAX) NOT NULL,
+    [Price]       FLOAT (53)     NOT NULL,
+    [CategoryId]  INT            NOT NULL,
+    CONSTRAINT [PK_Products] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Products_Categories_CategoryId] FOREIGN KEY ([CategoryId]) REFERENCES [dbo].[Categories] ([Id]) ON DELETE CASCADE
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Products_CategoryId]
+    ON [dbo].[Products]([CategoryId] ASC);
+
+
+CREATE TABLE [dbo].[Sales] (
+    [Id]        INT           IDENTITY (1, 1) NOT NULL,
+    [SalesDate] DATETIME2 (7) DEFAULT ('0001-01-01T00:00:00.0000000') NOT NULL,
+    CONSTRAINT [PK_Sales] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+CREATE TABLE [dbo].[SalesDetails] (
+    [SalesId]   INT NOT NULL,
+    [ProductId] INT NOT NULL,
+    [Quantity]  INT NOT NULL,
+    CONSTRAINT [PK_SalesDetails] PRIMARY KEY CLUSTERED ([SalesId] ASC, [ProductId] ASC),
+    CONSTRAINT [FK_SalesDetails_Products_ProductId] FOREIGN KEY ([ProductId]) REFERENCES [dbo].[Products] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_SalesDetails_Sales_SalesId] FOREIGN KEY ([SalesId]) REFERENCES [dbo].[Sales] ([Id]) ON DELETE CASCADE
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_SalesDetails_ProductId]
+    ON [dbo].[SalesDetails]([ProductId] ASC);
+
+
