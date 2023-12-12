@@ -1,0 +1,29 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>File-based Analsis:</h1>
+
+<form method="post" enctype="multipart/form-data" asp-action="Result" asp-controller="FileBased">
+    <label for="inputFile" class="form-label">File Upload</label>
+    <input type="file" name="inputFile" class="form-control" accept=".csv" required="true"/>
+    
+    <div class="mb-3">
+    </div>
+
+    <label for="minimumSupport">Minimum Support (%):</label>
+    <input type="number" min="0" max="50" name="minimumSupport" required="true" value="10"/>
+    
+    <div class="mb-3">
+    </div>
+
+    <label for="minimumConfidence">Minimum Confidence (%): </label>
+    <input type="number" min="0" max="100" name="minimumConfidence" required="true" value="60"/>
+
+    <div class="mb-3">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

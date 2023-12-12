@@ -1,0 +1,143 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Results - @ViewBag.FileName</h1>
+<br />
+<h7>Minimum Support: (@ViewBag.UniqueOrderList.Count * @ViewBag.MinimumSupport) / 100 = @ViewBag.MinimumSupportFinal</h7>
+<br/>
+<h7>Minimum Confidence: @ViewBag.MinimumConfidenceFinal %</h7>
+<br />
+<br />
+<div class="mb-3"></div>
+
+<h3>Two Item Combinations</h3>
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr style="text-align: center;">
+            <th>Combination</th>
+            <th>First bought item</th>
+            <th>Confidence</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var combination in ViewBag.QualifiedTwoItemCombinations)
+        {
+            <tr style="text-align: center; vertical-align: central;">
+                <td rowspan="3">{ @ViewBag.ProductDictionary[combination[0]].ProductName, @ViewBag.ProductDictionary[combination[1]].ProductName }</td>
+            </tr>
+            <tr style="text-align: center; vertical-align: central;" class="table-bordered">
+
+                @{
+                    var combinationConfidencePercent = ViewBag.TwoItemCombinationConfidence[combination][0] * 100;
+                }
+
+                @if (combinationConfidencePercent >= ViewBag.MinimumConfidenceFinal)
+                {
+                    <td class="table-success">@ViewBag.ProductDictionary[combination[0]].ProductName <span style="color: gray;">-> @ViewBag.ProductDictionary[combination[1]].ProductName</span></td>
+                    <td class="table-success">@(MathF.Round(ViewBag.TwoItemCombinationConfidence[combination][0] * 100))% </td>
+                }
+                else
+                {
+                    <td>@ViewBag.ProductDictionary[combination[0]].ProductName <span style="color: gray;">-> @ViewBag.ProductDictionary[combination[1]].ProductName</span></td>
+                    <td>@(MathF.Round(ViewBag.TwoItemCombinationConfidence[combination][0] * 100))%</td>                    
+                }
+            </tr>
+            <tr style="text-align: center; vertical-align: central;">
+
+                @{
+                    var combinationConfidencePercent2 = ViewBag.TwoItemCombinationConfidence[combination][1] * 100;
+                }
+
+                @if (combinationConfidencePercent2 >= ViewBag.MinimumConfidenceFinal)
+                {
+                    <td class="table-success">@ViewBag.ProductDictionary[combination[1]].ProductName <span style="color: gray;">-> @ViewBag.ProductDictionary[combination[0]].ProductName</span></td>
+                    <td class="table-success">@(MathF.Round(ViewBag.TwoItemCombinationConfidence[combination][1] * 100))%</td>
+                }
+                else
+                {
+                    <td>@ViewBag.ProductDictionary[combination[1]].ProductName <span style="color: gray;">-> @ViewBag.ProductDictionary[combination[0]].ProductName</span></td>
+                    <td>@(MathF.Round(ViewBag.TwoItemCombinationConfidence[combination][1] * 100))%</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="mb-3"></div>
+<br />
+<br />
+
+<h3>Three Item Combinations</h3>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr style="text-align: center;">
+            <th>Combination</th>
+            <th>First bought items</th>
+            <th>Confidence</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var combination in ViewBag.QualifiedThreeItemCombinations)
+        {
+            <tr style="text-align: center; vertical-align: central;">
+                <td rowspan="4">{ @ViewBag.ProductDictionary[combination[0]].ProductName, @ViewBag.ProductDictionary[combination[1]].ProductName, @ViewBag.ProductDictionary[combination[2]].ProductName }</td>
+            </tr>
+            <tr style="text-align: center; vertical-align: central;">
+
+                @{
+                    var resultFloat1 = ViewBag.ThreeItemCombinationConfidence[combination][0] * 100;
+                }
+
+                @if (resultFloat1 >= ViewBag.MinimumConfidenceFinal)
+                {
+                    <td class="table-success">@ViewBag.ProductDictionary[combination[0]].ProductName + @ViewBag.ProductDictionary[combination[1]].ProductName <span style="color: gray;">-> @ViewBag.ProductDictionary[combination[2]].ProductName</span></td>
+                    <td class="table-success">@(MathF.Round(ViewBag.ThreeItemCombinationConfidence[combination][0] * 100))%</td>
+                }
+                else
+                {
+                    <td>@ViewBag.ProductDictionary[combination[0]].ProductName + @ViewBag.ProductDictionary[combination[1]].ProductName <span style="color: gray;">-> @ViewBag.ProductDictionary[combination[2]].ProductName</span></td>
+                    <td>@(MathF.Round(ViewBag.ThreeItemCombinationConfidence[combination][0] * 100))%</td>
+                }
+
+            </tr>
+            <tr style="text-align: center; vertical-align: central;">
+
+                @{
+                    var resultFloat2 = ViewBag.ThreeItemCombinationConfidence[combination][1] * 100;
+                }
+
+                @if (resultFloat2 >= ViewBag.MinimumConfidenceFinal)
+                {
+                    <td class="table-success">@ViewBag.ProductDictionary[combination[0]].ProductName + @ViewBag.ProductDictionary[combination[2]].ProductName <span style="color: gray;">-> @ViewBag.ProductDictionary[combination[1]].ProductName</span></td>
+                    <td class="table-success">@(MathF.Round(ViewBag.ThreeItemCombinationConfidence[combination][1] * 100))%</td>
+                }
+                else
+                {
+                    <td>@ViewBag.ProductDictionary[combination[0]].ProductName + @ViewBag.ProductDictionary[combination[2]].ProductName <span style="color: gray;">-> @ViewBag.ProductDictionary[combination[1]].ProductName</span></td>
+                    <td>@(MathF.Round(ViewBag.ThreeItemCombinationConfidence[combination][1] * 100))%</td>
+                }
+            </tr>
+            <tr style="text-align: center; vertical-align: central;">
+
+                @{
+                    var resultFloat3 = ViewBag.ThreeItemCombinationConfidence[combination][2] * 100;
+                }
+
+                @if (resultFloat3 >= ViewBag.MinimumConfidenceFinal)
+                {
+                    <td class="table-success">@ViewBag.ProductDictionary[combination[1]].ProductName + @ViewBag.ProductDictionary[combination[2]].ProductName <span style="color: gray;">-> @ViewBag.ProductDictionary[combination[0]].ProductName</span></td>
+                    <td class="table-success">@(MathF.Round(ViewBag.ThreeItemCombinationConfidence[combination][2] * 100))%</td>
+                }
+                else
+                {
+                    <td>@ViewBag.ProductDictionary[combination[1]].ProductName + @ViewBag.ProductDictionary[combination[2]].ProductName <span style="color: gray;">-> @ViewBag.ProductDictionary[combination[0]].ProductName</span></td>
+                    <td>@(MathF.Round(ViewBag.ThreeItemCombinationConfidence[combination][2] * 100))%</td>
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>
