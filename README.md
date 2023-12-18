@@ -11,4 +11,9 @@ A simulator that implements the Apriori Algorithm to produce association rules f
 ## Additional Instructions
 - Create the products first. 
 - Navigate to the transactions page. Add some transactions and list the products inside the trasactions detail page.
-- Open the Apriori page, specify the minimum support and minimum confidence then press Submit. 
+- Open the Apriori page, specify the minimum support and minimum confidence then press Submit.
+
+## File-based Analysis Feature
+- Use the `SimulatedOrderData.csv` included in the repo as the file in File-based Analysis page.
+- Specify the minimum support and confidence.
+- Run the analysis.

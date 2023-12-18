@@ -23,7 +23,7 @@ namespace ShopApp.Controllers
             return View();
         }
 
-        public IActionResult Result(IFormFile inputFile, int minimumSupport, int minimumConfidence)
+        public IActionResult Result(IFormFile inputFile, float minimumSupport, int minimumConfidence)
         {
             var uniqueOrderList = new List<SuperstoreOrder>();
             var uniqueProductList = new List<SuperstoreProduct>();
@@ -37,11 +37,12 @@ namespace ShopApp.Controllers
 
                 while (!reader.EndOfStream)
                 {
-                    
-                    if (index == 2000)
+                    /*
+                    if (index == 1000)
                     {
                         break;
                     }
+                    */
                     
 
                     var line = reader.ReadLine();
