@@ -4,11 +4,16 @@
 @{
 }
 
-<h1>File-based Analsis:</h1>
+<h1>File-based Analysis:</h1>
 
+<b>Download contoh order data disini.</b>
+<form asp-controller="filebased" asp-action="DownloadSimulatedOrderData" method="post">
+    <button class="btn btn-primary" type="submit">Download Simulated Order Data</button>
+</form>
+<hr />
 <form method="post" enctype="multipart/form-data" asp-action="Result" asp-controller="FileBased">
     <label for="inputFile" class="form-label">File Upload</label>
-    <input type="file" name="inputFile" class="form-control" accept=".csv" required="true"/>
+    <input type="file" name="inputFile" class="form-control" accept=".csv" required="true" max="1"/>
     
     <div class="mb-3">
     </div>

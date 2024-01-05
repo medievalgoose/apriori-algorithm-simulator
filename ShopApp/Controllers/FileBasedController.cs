@@ -18,9 +18,27 @@ namespace ShopApp.Controllers
             public string ProductName { get; set; }
         }
 
+        private readonly IWebHostEnvironment _environment;
+
+        public FileBasedController(IWebHostEnvironment environment)
+        {
+            _environment = environment;
+        }
+
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult DownloadSimulatedOrderData()
+        {
+            string fileName = "SimulatedOrderData.csv";
+            string filePath = Path.Combine(_environment.WebRootPath, $"{fileName}");
+            string mimeType = "application/octet-stream";
+
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+            return File(fileBytes, mimeType, fileName);
         }
 
         public IActionResult Result(IFormFile inputFile, float minimumSupport, int minimumConfidence)
