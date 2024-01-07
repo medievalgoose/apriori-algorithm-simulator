@@ -16,7 +16,7 @@ namespace ShopApp.Controllers
         public IActionResult Index()
         {
             // return View("~/Views/Apriori/Index");
-            return RedirectToAction("Index", "Apriori");
+            return RedirectToAction("Index", "FileBased");
         }
 
         public IActionResult Privacy()
