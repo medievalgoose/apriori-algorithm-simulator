@@ -6,7 +6,7 @@
 
 <h1>Analisis Apriori</h1>
 <form asp-controller="filebased" asp-action="DownloadSimulatedOrderData" method="post">
-    <button class="btn btn-link" type="submit">Download Sample Order Data</button>
+    <button class="btn btn-link" type="submit">Sample Order Data</button>
 </form>
 <hr />
 <form method="post" enctype="multipart/form-data" asp-action="Result" asp-controller="FileBased">
@@ -16,8 +16,12 @@
     <div class="mb-3">
     </div>
 
-    <label for="minimumSupport">Minimum Support (%):</label>
+    <label for="minimumSupport">Minimum Support:</label>
     <input type="number" min="0" max="50" name="minimumSupport" step="0.01" required="true" value="10"/>
+    <br />
+    <input type="radio" name="supportType" id="percentage" value="percentage" checked="true" />&nbsp;<label for="percentage">Persentase</label>&nbsp;&nbsp;
+    <input type="radio" name="supportType" id="occurence" value="occurence" />&nbsp;<label for="occurence">Frekuensi</label>
+    <br />
     
     <div class="mb-3">
     </div>
@@ -28,5 +32,5 @@
     <div class="mb-3">
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Mulai</button>
 </form>

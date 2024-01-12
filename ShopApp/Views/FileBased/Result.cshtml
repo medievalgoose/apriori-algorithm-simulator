@@ -6,19 +6,28 @@
 
 <h1>Results - @ViewBag.FileName</h1>
 <br />
-<h7>Minimum Support: (@ViewBag.UniqueOrderList.Count * @ViewBag.MinimumSupport) / 100 = @ViewBag.MinimumSupportFinal</h7>
+    @{
+        if (ViewBag.SupportType == "occurence")
+        {
+            <h5>Minimum Support: @ViewBag.MinimumSupportFinal</h5>
+        }
+        else
+        {
+            <h5>Minimum Support: (@ViewBag.UniqueOrderList.Count * @ViewBag.MinimumSupport) / 100 = @ViewBag.MinimumSupportFinal</h5>
+        }
+    }
 <br/>
-<h7>Minimum Confidence: @ViewBag.MinimumConfidenceFinal %</h7>
+<h5>Minimum Confidence: @ViewBag.MinimumConfidenceFinal %</h5>
 <br />
 <br />
 <div class="mb-3"></div>
 
-<h3>Two Item Combinations</h3>
+<h3>Kombinasi 2 Item</h3>
 <table class="table table-bordered table-hover">
     <thead class="thead-dark">
         <tr style="text-align: center;">
-            <th>Combination</th>
-            <th>First bought item</th>
+            <th>Kombinasi</th>
+            <th>Item yang Pertama Dibeli</th>
             <th>Confidence</th>
         </tr>
     </thead>
@@ -70,12 +79,12 @@
 <br />
 <br />
 
-<h3>Three Item Combinations</h3>
+<h3>Kombinasi 3 Item</h3>
 <table class="table table-bordered table-hover">
     <thead>
         <tr style="text-align: center;">
-            <th>Combination</th>
-            <th>First bought items</th>
+            <th>Kombinasi</th>
+            <th>Item yang Pertama Dibeli</th>
             <th>Confidence</th>
         </tr>
     </thead>

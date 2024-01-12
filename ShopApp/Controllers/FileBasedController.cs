@@ -41,7 +41,7 @@ namespace ShopApp.Controllers
             return File(fileBytes, mimeType, fileName);
         }
 
-        public IActionResult Result(IFormFile inputFile, float minimumSupport, int minimumConfidence)
+        public IActionResult Result(IFormFile inputFile, float minimumSupport, int minimumConfidence, string supportType)
         {
             var uniqueOrderList = new List<SuperstoreOrder>();
             var uniqueProductList = new List<SuperstoreProduct>();
@@ -116,7 +116,7 @@ namespace ShopApp.Controllers
 
                 foreach (var product in order.ProductsList)
                 {
-                    Console.WriteLine($"Product in sales ID {order.OrderID}: {product.ProductID}");
+                    Console.WriteLine($"Product in sales ID {order.OrderID}: {product.ProductID} | {product.ProductName}");
                 }
             }
 
@@ -128,6 +128,11 @@ namespace ShopApp.Controllers
             float minimumSupportFinal = (uniqueOrderList.Count * minimumSupport) / 100;
             // float minimumSupportFinal = minimumSupport;
             float minimumConfidenceFinal = minimumConfidence;
+
+            if (supportType  == "occurence")
+            {
+                minimumSupportFinal = minimumSupport;
+            }
 
             // CALCULATING SUPPORT - ONE ITEM
             var qualifiedProductList = new List<string>();
@@ -307,6 +312,7 @@ namespace ShopApp.Controllers
             ViewBag.MinimumSupport = minimumSupport;
             ViewBag.MinimumSupportFinal = minimumSupportFinal;
             ViewBag.MinimumConfidenceFinal = minimumConfidenceFinal;
+            ViewBag.SupportType = supportType;
 
             ViewBag.QualifiedProductList = qualifiedProductList;
             ViewBag.OneItemOccurence = oneItemOccurence;
